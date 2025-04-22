@@ -25,7 +25,9 @@ urlpatterns = [
     path('', views.index, name='index'),
     path("manager", views.manager, name='manager'),  # Fixed missing view argument
     path("settings", views.settings, name='settings'),
-    path("dashboard", views.dashboard.as_view(), name='dashboard'),  # Fixed typo in URL path
+    path("bucket/<int:bucket_id>/", views.BucketView.as_view(), name='bucket'),
+    path('update-priority/', views.update_priority, name='update_priority'),
+    path('dashboard/', views.dashboard.as_view(), name='dashboard'),  # Fixed missing view argument
     # Using Django's built-in authentication views
     path("login", views.Login.as_view(), name='login'),
     path("logout", auth_views.LogoutView.as_view(), name='logout'),

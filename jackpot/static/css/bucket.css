@@ -1,0 +1,165 @@
+/* Dark Theme with Neutral Accents and Space Maximization */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #121212; /* Dark background */
+    color: #e0e0e0; /* Light gray text for readability */
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+header {
+    background: #1f1f1f;
+    padding: 3rem 1.5rem; /* Increased padding for more white space */
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+    text-align: center;
+    margin-bottom: 2rem; /* Space below header */
+}
+
+h1 {
+    font-size: 3rem; /* Bigger heading for better visibility */
+    margin: 0;
+    color: #ffcc00;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.tagline {
+    font-size: 1.5rem; /* Increased font size for tagline */
+    font-style: italic;
+    color: #aaaaaa;
+    margin-top: 0.5rem;
+}
+
+main {
+    padding: 3rem 1.5rem; /* Added more padding to maximize white space */
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 100%;
+}
+
+#bucket-list {
+    list-style: none;
+    padding: 0;
+    margin: 2rem auto; /* Added margin for spacing around list */
+    width: 100%;
+    max-width: 800px; /* Added a max-width to prevent too wide of a list */
+}
+
+.draggable {
+    background: #333333;
+    color: #e0e0e0;
+    border: 2px solid #ffcc00;
+    padding: 30px; /* Increased padding for more spacious list items */
+    margin-bottom: 30px; /* Added more margin between items */
+    border-radius: 10px;
+    cursor: grab;
+    box-shadow: 0 4px 10px rgba(255, 204, 0, 0.2);
+    text-align: left;
+    transition: background 0.2s ease-in-out;
+    width: 100%; /* Ensures items span the available width */
+}
+
+.draggable:hover {
+    background: #444444;
+}
+
+.draggable.dragging {
+    opacity: 0.6;
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.5);
+    cursor: grabbing;
+}
+
+.placeholder {
+    border: 2px dashed #ffcc00;
+    background: rgba(255, 255, 255, 0.05);
+    height: 80px; /* Increased height for better visual spacing */
+    margin-bottom: 30px; /* Added more space between placeholder and items */
+    border-radius: 10px;
+}
+
+.quantity {
+    font-weight: bold;
+    color: #4cd137;
+    margin-top: 6px;
+}
+
+.label {
+    color: #bbbbbb;
+    font-style: italic;
+    font-size: 1rem; /* Adjusted size for better readability */
+    display: block;
+    margin-bottom: 8px;
+}
+
+/* Floating Add Button */
+.add-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #ff5c8d;
+    color: white;
+    font-size: 2.5rem; /* Slightly larger icon */
+    border-radius: 50%;
+    width: 70px; /* Slightly larger button */
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+    transition: background 0.2s ease-in-out;
+}
+
+.add-button:hover {
+    background: #ffcc00;
+}
+
+/* Modal Styling */
+.modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center the modal */
+    width: 80%; /* Adjust width as needed */
+    max-width: 600px; /* Set a max width */
+    height: auto;
+    background: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    z-index: 1000; /* Make sure it's on top of other content */
+}
+
+.modal-content {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    max-height: 80vh; /* Limit height to 80% of the viewport */
+    overflow-y: auto; /* Enable scrolling */
+    text-align: left;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.3);
+}
+
+/* Close button */
+.close-btn {
+    color: #ffcc00;
+    font-size: 2rem;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+}
+
+/* Scrollable modal content */
+.modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: #ffcc00;
+    border-radius: 4px;
+}

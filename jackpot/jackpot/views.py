@@ -8,6 +8,10 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Bucket
 from .forms import BucketForm
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+import json
+from .models import Item
 
 class Login(LoginView):
     template_name = 'login.html'
@@ -66,4 +70,49 @@ class dashboard(LoginRequiredMixin, View):
             'bucket_json': bucket_list,
             'form': form
         })
+    
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+
+@method_decorator(csrf_exempt, name='dispatch')
+class BucketView(LoginRequiredMixin, View):
+    def get(self, request, bucket_id):
+        try:
+            bucket = Bucket.objects.get(id=bucket_id, user=request.user)
+        except Bucket.DoesNotExist:
+            return HttpResponse("Bucket not found", status=404)
+
+        return render(request, 'bucket.html', {
+            'bucket': bucket,
+            'items': bucket.items.order_by('priority'),
+        })
+
+    def post(self, request, bucket_id):
+        name = request.POST.get('name')
+        quantity = request.POST.get('quantity') or 0
+        price = request.POST.get('price') or 0.0
+
+        try:
+            bucket = Bucket.objects.get(id=bucket_id, user=request.user)
+        except Bucket.DoesNotExist:
+            return HttpResponse("Bucket not found", status=404)
+
+        if name:
+            Item.objects.create(
+                name=name,
+                bucket=bucket,
+                quantity=int(quantity),
+                price=float(price)
+            )
+
+        return redirect('bucket', bucket_id=bucket_id)
+
+    
+@csrf_exempt
+def update_priority(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        for item_data in data['order']:
+            Item.objects.filter(id=item_data['id']).update(priority=item_data['priority'])
+        return JsonResponse({'status': 'ok'})
 

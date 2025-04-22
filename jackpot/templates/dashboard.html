@@ -62,17 +62,92 @@
         <!-- Bucket Grid Layout -->
         <div id="bucket-grid" class="bucket-grid">
             {% for bucket in buckets %}
-                <div class="bucket-card">
-                    <h3>{{ bucket.name }}</h3>
-                    <p>{{ bucket.percentage }}% of monthly income</p>
-                    <div class="bucket-details">
-                        <!-- You can add more dynamic details if needed, e.g., amount, spending, etc. -->
-                    </div>
-                </div>
+            <div class="bucket-card" onclick="openBucketModal('{{ bucket.id }}');">
+            <h3>{{ bucket.name }}</h3>
+            <p>{{ bucket.percentage }}% of monthly income</p>
+            <div class="bucket-details">
+            <!-- You can add more dynamic details if needed, e.g., amount, spending, etc. -->
+            </div>
+            </div>
             {% empty %}
-                <p>No buckets created yet. Add some below!</p>
+            <p>No buckets created yet. Add some below!</p>
             {% endfor %}
         </div>
+
+        <!-- Modal for Viewing Bucket -->
+        <div id="view-bucket-modal" class="modal">
+            <div class="modal-content">
+            <span class="close-btn" onclick="closeBucketModal()">&times;</span>
+            <div id="bucket-modal-content">
+                <!-- Bucket details will be dynamically loaded here -->
+            </div>
+            </div>
+        </div>
+
+       <script>
+    // Open modal logic for Create Bucket
+    function openBucketModal(bucketId) {
+        const modal = document.getElementById('view-bucket-modal');
+        const modalContent = document.getElementById('bucket-modal-content');
+
+        // Fetch bucket details dynamically
+        fetch(`/bucket/${bucketId}`)
+            .then(response => response.text())
+            .then(html => {
+                modalContent.innerHTML = html;
+                modal.style.display = 'block';
+            })
+            .catch(error => console.error('Error loading bucket details:', error));
+    }
+
+    // Close modal logic for Create Bucket
+    function closeBucketModal() {
+        const modal = document.getElementById('view-bucket-modal');
+        modal.style.display = 'none';
+    }
+
+    // Close modal when clicking outside of it
+    window.onclick = function(event) {
+        const modal = document.getElementById('view-bucket-modal');
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    };
+
+    // Close the "Create Bucket" modal after form submission (AJAX)
+    document.getElementById('create-bucket-form').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the form from refreshing the page
+
+        const form = this;
+        const modal = document.getElementById('bucket-modal');
+
+        // Optional: Add form validation before submitting
+        const formData = new FormData(form);
+
+        // Perform AJAX submission (assuming you're using Django)
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': form.querySelector('[name="csrfmiddlewaretoken"]').value
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Handle success - You can update the UI or show a success message
+                modal.style.display = 'none'; // Close the modal
+            } else {
+                // Handle errors (e.g., show an error message)
+                console.error('Error:', data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Form submission failed:', error);
+        });
+    });
+</script>
+
 
         <!-- Modal for Creating Bucket -->
         <div id="bucket-modal" class="modal">

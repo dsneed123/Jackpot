@@ -1,0 +1,57 @@
+{% load static %}
+
+<body>
+    <link rel="stylesheet" href="{% static 'css/bucket.css' %}">
+  
+    <header>
+        <h1>🎰 Bucket List</h1>
+        <p class="tagline">Organize your dreams with style</p>
+    </header>
+
+    <main>
+        <ul id="bucket-list">
+            {% for item in items %}
+                <li class="draggable" data-id="{{ item.id }}">
+                    <strong>{{ item.name }}</strong><br>
+                    <span class="label">Quantity:</span> <span class="quantity">{{ item.quantity }}</span><br>
+                    <span class="label">Price:</span> ${{ item.price }}
+                </li>
+            {% endfor %}
+        </ul>
+    </main>
+
+    <!-- Floating Add Button -->
+    <div class="add-button" id="addItemBtn">
+        +
+    </div>
+
+    <!-- Modal for Adding Item -->
+    <div class="modal" id="addItemModal">
+        <div class="modal-content">
+            <h2>Add New Item</h2>
+            <form id="add-item-form" method="POST">
+                {% csrf_token %}
+                <input type="text" id="new-item" name="name" placeholder="Item Name" required />
+                <input type="number" name="quantity" placeholder="Quantity" min="1" />
+                <input type="number" name="price" step="0.01" placeholder="Price" min="0" />
+                <button type="submit">Add Item</button>
+            </form>
+            <button onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script src="{% static 'js/drag.js' %}"></script>
+
+    <script>
+        // Show modal on button click
+        document.getElementById('addItemBtn').onclick = function() {
+            document.getElementById('addItemModal').style.display = 'flex';
+        };
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('addItemModal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
