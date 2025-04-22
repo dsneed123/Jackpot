@@ -1,0 +1,98 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dashboard</title>
+        <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+        <!-- Include Chart.js from CDN -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="{% static 'js/dashboard.js' %}"></script>
+        
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // Get bucket data from Django context
+                const bucketData = JSON.parse(document.getElementById('bucket-data').textContent);
+
+                // Extract labels and data
+                const labels = bucketData.map(bucket => bucket.name);
+                const data = bucketData.map(bucket => bucket.percentage);
+
+                // Render the pie chart
+                const ctx = document.getElementById('pieChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: data,
+                            backgroundColor: [
+                                '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'
+                            ]
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                        }
+                    }
+                });
+            });
+        </script>
+    </head>
+<body>
+    {% include 'nav.html' %}
+    <div class="welcome-message">
+        <h1>Financial Breakdown for, {{ username }}!</h1>
+    </div>
+    <div class="dashboard-container">
+        <!-- Pie Chart: Financial Breakdown -->
+        <div class="chart-container">
+            <h2>Your Financial Breakdown</h2>
+            <canvas id="pieChart"></canvas>
+        </div>
+
+        <!-- Welcome message -->
+
+
+        <!-- Bucket Grid Layout -->
+        <div id="bucket-grid" class="bucket-grid">
+            {% for bucket in buckets %}
+                <div class="bucket-card">
+                    <h3>{{ bucket.name }}</h3>
+                    <p>{{ bucket.percentage }}% of monthly income</p>
+                    <div class="bucket-details">
+                        <!-- You can add more dynamic details if needed, e.g., amount, spending, etc. -->
+                    </div>
+                </div>
+            {% empty %}
+                <p>No buckets created yet. Add some below!</p>
+            {% endfor %}
+        </div>
+
+        <!-- Modal for Creating Bucket -->
+        <div id="bucket-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h3>Create a New Bucket</h3>
+                <form method="post" id="create-bucket-form">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit">Create Bucket</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Add Bucket Button -->
+    <button class="add-bucket-btn" id="open-modal-btn">+</button>
+
+    <!-- JSON data for chart -->
+    {{ bucket_json|json_script:"bucket-data" }}
+
+</body>
+</html>

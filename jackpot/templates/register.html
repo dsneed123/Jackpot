@@ -1,0 +1,9 @@
+<!-- templates/register.html -->
+{% load static %}
+<h2>Register</h2>
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Register</button>
+</form>

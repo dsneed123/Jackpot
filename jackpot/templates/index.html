@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jackpot - Manage Your Finances</title>
+    <link rel="stylesheet" href="{% static 'index.css' %}">
+</head>
+<body>
+    {% include 'nav.html' %}
+    <header>
+        <h1>🎰 Welcome to Jackpot 🎰</h1>
+        <p class="tagline">Your winning streak starts with smart finances!</p>
+    </header>
+
+    <main>
+
+        <section class="features">
+            <h2>💰 Features</h2>
+            <ul>
+                <li>Custom budget creation with real-time tracking</li>
+                <li>Visual breakdowns of spending habits</li>
+                <li>Set savings goals and track your progress</li>
+                <li>Secure and easy-to-use dashboard</li>
+            </ul>
+        </section>
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <input type="hidden" name="next" value="{% url 'dashboard' %}">
+
+            <button type="submit">Login</button>
+        </form>
+        <section class="call-to-action">
+            <h2>🎟️ Join the Jackpot Club</h2>
+            <p>Sign up now and take control of your finances like a high roller. It's your money — make it work for you!</p>
+            <button>Start Winning</button>
+        </section>
+
+        <section class="login">
+            <h2>🔑 Login</h2>
+
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Jackpot Finance. All rights reserved.</p>
+    </footer>
+</body>
+</html>

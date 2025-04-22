@@ -1,0 +1,26 @@
+/* Vegas-Style Nav Bar (no logo) */
+.nav {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    background: linear-gradient(90deg, #1c1c1c, #121212);
+    padding: 15px 30px;
+    border-bottom: 2px solid #d4af37;
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-right .nav-link {
+    margin-left: 25px;
+    color: #f0f0f0;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.nav-right .nav-link:hover {
+    color: #ffd700;
+    text-shadow: 0 0 6px rgba(255, 215, 0, 0.5);
+}
